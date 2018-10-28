@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+
+  <head>
+
+    <meta charset="UTF-8">
+    <title>NBA Trivia Game</title>
+    <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery.js"></script>
+
+    <!-- Our CSS style sheet -->
+    <link rel="stylesheet" href="assets/css/style.css">
+
+  </head>
+
+  <body>
+
+      <div class="jumbotron container" id="game-display">
+
+          <div class="row" id="start-display">
+              <div class="col-2"></div>
+              <h2 class="col-8 text-center mb-3">NBA TRIVIA</h2>
+              <div class="col-2"></div>
+          </div>
+
+          <div class="row">
+              <div class="col-3"></div>
+              <button class="col-6 mb-3" id="start">Start</button>
+              <div class="col-3"></div>
+          </div>
+
+              <div id="game-area">                
+                    <div class="row" id="score-area">
+                          <div class="col-2"></div>
+                          <div class="col-4" id="correct-answers"></div>
+                          <div class="col-4" id="wrong-answers"></div>
+                          <div class="col-2"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8 text-center m-3" id="timer-area"></div>
+                        <div class="col-2"></div>
+                    </div>
+                    <div class="card bg-light">
+                        <div class="row">
+                            <div class="col-12 text-center m-3" id="questions-area"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center m-3" id="answers-area"></div>
+                        </div>
+                  </div>
+              </div>
+        </div>
+
+
+
+    <!-- Script -->
+    <script type="text/javascript" src="assets/javascript/app.js"></script>
+
+  </body>
+
+</html>
