@@ -1,8 +1,4 @@
 
-
-
-
-
 $(document).ready(function(){
 
     $("#game-area").hide();
@@ -21,6 +17,7 @@ $(document).ready(function(){
         questionIndex: 0,
         button: $("<button>"),
         userSelect: "",
+        questionList: "",
         correct: false,
 
         questions: [
@@ -61,80 +58,95 @@ $(document).ready(function(){
         ////------- Game Start
         start: function() {
             $("#game-area").show();
+            // $("#timer-area").show();
 
             game.timerRun();
             game.correctAnswers = 0;
             game.wrongAnswers = 0;
             game.timeOuts = 0;
-            clearInterval(game.counterIntervalId);
 
             game.nextQuestions();
         },
 
         ////------- Launch initial questions or next questions
         nextQuestions: function() {
-            game.counter = 15;
+            $("#timer-area").show();
+            $("#questions-area").html("<p>" + game.questions[game.questionIndex].q + "</p>");
 
-            $("#questions-area").html("<p>" + game.questions[game.questionIndex].q + "</p>")
+            game.timerRun();
+            game.counter = 15;
         
             for (var i = 0; i < 4; i++) {
-                var questionList = game.questions[game.questionIndex].o[i];
-                buttons = $("<button>");
-                buttons.text(questionList);
-                buttons.attr({"data-index": i });
-                buttons.addClass("option btn btn-secondary btn-md mx-1 selected");
-                $("#answers-area").append(buttons);
-                }
+                game.questionList = game.questions[game.questionIndex].o[i];
+                game.buttons = $("<button>");
+                game.buttons.text(game.questionList);
+                game.buttons.attr({"data-index": i });
+                game.buttons.addClass("selected option btn btn-secondary btn-md mx-1");
+                $("#answers-area").append(game.buttons);
+                game.selectAnswer();
+                };
             },
 
-        ////------- Timer
-        timerRun: function() {
-            counterIntervalId = "";
-            clearInterval(counterIntervalId);
-            counterIntervalId = setInterval(game.decrement, 1000);
-        },
+                                        ////------- Timer
+                                        timerRun: function() {
+                                            game.counterIntervalId = "";
+                                            // clearInterval(counterIntervalId);
+                                            game.counterIntervalId = setInterval(game.decrement, 1000);
+                                        },
 
-        decrement: function() {
-            //  Decrease number by one.
-            game.counter--;
-            //  Show the number
-            $("#timer-area").html("<p>You have " + game.counter + " seconds left to answer your question!</p>");
-            //  Once number hits zero
-            if (game.counter === -1) {
-            // Next Question
-            game.nextQuestions();
-            }
-        },
+                                        decrement: function() {
+                                            //  Decrease number by one.
+                                            game.counter--;
+                                            //  Show the number
+                                            $("#timer-area").html("<p>You have " + game.counter + " seconds left to answer your question!</p>");
+                                            //  Once number hits zero
+                                            if (game.counter === -1) {
+                                                $("#result-area").html("<h3>" + "Time Out!" + "</h3>");
+                                                game.timeOut = setTimeout(game.quickReset, 1000);
+                                            }
+                                        },
 
         selectAnswer: function() {
-            correct;
-            userSelect;
+            // correct = false;
+            game.userSelect = "";
 
-            $(".selected").on('click',function(){
-                userSelect = $(this).data('index');
-                clearInterval(counterIntervalId);
+            $("button.selected").on("click", function() {
+                game.userSelect = $(this).text();
+                clearInterval(game.counterIntervalId);
+                // console.log(game.questions[game.questionIndex].a)
+                // console.log(game.userSelect);
+                if (game.userSelect === game.questions[game.questionIndex].a) {
+                    console.log(true);
+                    game.button.removeClass("btn-secondary").addClass("btn-success");
+                    game.correctAnswers++;
+                    game.questionIndex++;
+                    $("#result-area").html("<h3>" + "Correct Answer!" + "</h3>");
+                    game.timeOut = setTimeout(game.quickReset, 1000);
+                    // console.log(game.correctAnswers);
+                    // console.log(game.questionIndex);
+                    } else { 
+                        game.button.removeClass("btn-secondary").addClass("btn-danger");
+                        game.wrongAnswers++;
+                        game.questionIndex++;
+                        $("#result-area").html("<h3>" + "Wrong Answer!" + "</h3>");
+                        // console.log(game.wrongAnswers);
+                        // console.log(game.questionIndex);
+                        game.timeOut = setTimeout(game.quickReset, 1000);
+                    }
             });
-            console.log(userSelect);
-            
-            // for (var i = 0; i < 4; i++) {
-            //     if (userSelect === game.questions.a) {
-            //         correct = true;
-            //     }
-            // };
-            // if (correct === true) {
-            //     game.button.addClass('btn-success').removeClass('btn-secondary');
-            //     game.correctAnswers++;
-            //     game.questionIndex++;
-            //     } else if (!correct) { 
-            //         game.button.addClass('btn-danger').removeClass('btn-secondary');
-            //         game.wrongAnswers++;
-            //         game.questionIndex++;
-            //         }
-            
-            // game.nextQuestions();
         },
 
-
+        ////------- Quick Reset between questions
+        quickReset: function() {
+            $("#questions-area").empty();
+            $("#answers-area").empty();
+            $("#result-area").empty();
+            $("#timer-area").empty();
+            game.questionList = "";
+            game.nextQuestions();
+            clearTimeout(game.timeOut);
+            clearInterval(game.counterIntervalId);
+        },
 
 
         ////------- Game Over
