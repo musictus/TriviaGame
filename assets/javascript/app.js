@@ -1,10 +1,8 @@
-
 $(document).ready(function(){
     $("#restart").hide();
     $("#game-area").hide();
     $("#start").on("click", game.start);
     $("#restart").on("click", game.start);
-
 })
 
     var game = {
@@ -23,37 +21,45 @@ $(document).ready(function(){
             { 
                 q: "Which NBA team drafted Shaquille O’Neal and was the first of several teams for which he played?",
                 o: ["L.A. Lakers", "Miami Heat", "Phoenix Suns", "Orlando Magic"], 
-                a: "Orlando Magic"
+                a: "Orlando Magic",
+                g: "https://media.giphy.com/media/xUA7aUOybCDbpN5s6k/giphy.gif"
             },
             { 
                 q: "Which NBA coach led the Jordan-era Bulls to 3 consecutive championships, and then coached a Kobe-led Lakers to another 3 consecutive championships?",
                 o: ["Pat Riley", "Larry Brown", "Gregg Popovich", "Phil Jackson"],
-                a: "Phil Jackson"
+                a: "Phil Jackson",
+                g: "https://media.giphy.com/media/o9yEYXabWbsM8/giphy.gif"
             },
             { 
                 q: "For which university did Michael Jordan play basketball?",
                 o: ["University of Chicago", "Duke University", "University of North Carolina", "University of Kansas"],
-                a: "University of North Carolina"
+                a: "University of North Carolina",
+                g: "https://media.giphy.com/media/KfMI3lYfaB3IQ/giphy.gif"
             },
             { 
                 q: "What franchise has played in the most NBA finals since 1947?", 
                 o: ["The Celtics", "The Lakers", "The Spurs", "The Bulls"], 
-                a: "The Lakers"
+                a: "The Lakers",
+                g: "https://media.giphy.com/media/l46Craj343bB2TMSA/giphy.gif"
             },
             { 
                 q: "What two NBA players won the MVP trophy three times each from 1986 through 1992?",
                 o: ["Larry Bird & Michael Jordan", "Larry Bird & Magic Johnson", "Magic Johnson & Michael Jordan", "Larry Bird & Charles Barkley"],
-                a: "Magic Johnson & Michael Jordan"
+                a: "Magic Johnson & Michael Jordan",
+                g: "https://media.giphy.com/media/4J8kKHDwTZlVm/giphy.gif"
+                
             },
             { 
                 q: "What NBA team failed to make the playoffs in 1994 for the first time since 1976?", 
                 o: ["The New York Knicks", "The Boston Celtics" , "The Los Angeles Lakers", "The Detroit Pistons"], 
-                a: "The Los Angeles Lakers"
+                a: "The Los Angeles Lakers",
+                g: "https://media.giphy.com/media/26vIfKDKOw34lHRks/giphy.gif"
             },
             { 
                 q: "Which one of these is not a 1st overall draft pick?",
                 o: ["Chris Webber", "Allen Iverson", "Kenyon Martin", "Dikembe Mutombo"], 
-                a: "Dikembe Mutombo"
+                a: "Dikembe Mutombo",
+                g: "https://media.giphy.com/media/WO5GDSsx76rTy/giphy.gif"
             }
         ],
 
@@ -104,7 +110,7 @@ $(document).ready(function(){
             //  Decrease number by one.
             game.counter--;
             //  Show the number
-            $("#timer-area").html("<p>You have " + game.counter + " seconds left to answer your question!</p>");
+            $("#timer-area").text("You have " + game.counter + " seconds left to answer your question!");
             //  Once number hits zero
             if (game.counter === -1) {
                 $("#result-area").html("<h3>" + "Time Out!" + "</h3>");
@@ -126,14 +132,19 @@ $(document).ready(function(){
                     console.log(true);
                     // game.button.removeClass("btn-secondary").addClass("btn-success");
                     game.correctAnswers++;
-                    $("#result-area").html("<h3>" + "Correct Answer!" + "</h3>");
-                    game.wait = setTimeout(game.quickReset, 1000);
+                    $("#result-area").html("<h3>" + "Correct Answer!" + "</h3>").css("color", "green");
+
+                    var giphyImage = $("<img>");
+                    giphyImage.attr("src", game.questions[game.questionIndex].g);
+                    $("#images").prepend(giphyImage);
+
+                    game.wait = setTimeout(game.quickReset, 4000);
                                             console.log(game.correctAnswers);
                                             console.log(game.questionIndex);
                     } else { 
                         // game.button.removeClass("btn-secondary").addClass("btn-danger");
                         game.wrongAnswers++;
-                        $("#result-area").html("<h3>" + "Wrong Answer!" + "</h3>");
+                        $("#result-area").html("<h3>" + "Wrong Answer!" + "</h3>").css("color", "red");
                         game.wait = setTimeout(game.quickReset, 1000);
                                                 console.log(game.wrongAnswers);
                                                 console.log(game.questionIndex);
@@ -147,7 +158,8 @@ $(document).ready(function(){
                 $("#questions-area").empty();
                 $("#answers-area").empty();
                 $("#result-area").empty();
-                $("#timer-area").empty();
+                $("#images").empty();
+                $("#timer-area").text("Count Down!");
                 game.questionList = "";
                 game.nextQuestions();
             } else {
@@ -164,7 +176,8 @@ $(document).ready(function(){
             $("#questions-area").empty();
             $("#answers-area").empty();
             $("#timer-area").empty();
-            $("#result-area").html("<h3>" + "GAME OVER!" + "</h3>");
+            $("#images").empty();
+            $("#result-area").html("<h3>" + "GAME OVER!" + "</h3>").css("color", "red");
             $("#correct-answers").text("Correct Answer: " + game.correctAnswers);
             $("#wrong-answers").text("Wrong Answer: " + game.wrongAnswers);
             $("#time-outs").text("Time Outs: " + game.timeOuts);
