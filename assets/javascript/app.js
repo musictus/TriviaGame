@@ -61,9 +61,11 @@ $(document).ready(function(){
         start: function() {
             $("#game-area").show();
             $("#timer-section").show();
-            $("#score-area").empty();
             $("#restart").hide();
             $("#result-area").empty();
+            $("#correct-answers").empty();
+            $("#wrong-answers").empty();
+            $("#time-outs").empty();
             game.questions;
             game.correctAnswers = 0;
             game.wrongAnswers = 0;
@@ -162,13 +164,13 @@ $(document).ready(function(){
             $("#questions-area").empty();
             $("#answers-area").empty();
             $("#timer-area").empty();
+            $("#result-area").html("<h3>" + "GAME OVER!" + "</h3>");
             $("#correct-answers").text("Correct Answer: " + game.correctAnswers);
             $("#wrong-answers").text("Wrong Answer: " + game.wrongAnswers);
             $("#time-outs").text("Time Outs: " + game.timeOuts);
-            $("#result-area").html("<h3>" + "GAME OVER!" + "</h3>");
             
             $(document).ready();
-            
+
             return game.nextQuestions();
 
         }
